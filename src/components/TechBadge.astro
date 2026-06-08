@@ -1,0 +1,11 @@
+---
+export interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+---
+
+<span class="inline-block rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+  {name}
+</span>

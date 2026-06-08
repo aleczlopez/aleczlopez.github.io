@@ -1,0 +1,83 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <slot />
+  <style is:global>
+    .mermaid-wrapper {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      border-width: 1px;
+      border-color: transparent;
+      background-color: transparent;
+      padding: 1rem;
+    }
+    @media (min-width: 640px) {
+      .mermaid-wrapper {
+        padding: 1.5rem;
+      }
+    }
+    .mermaid-caption {
+      margin-top: 0.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+  </style>
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", function () {
+      const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+      if (mermaidBlocks.length > 0) {
+        import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js").then(
+          (mermaid) => {
+            mermaid.default.initialize({
+              startOnLoad: false,
+              theme: "dark",
+              fontFamily: "Roboto, system-ui, sans-serif",
+              themeVariables: {
+                primaryColor: "#1e3a8a",
+                primaryBorderColor: "#3b82f6",
+                lineColor: "#60a5fa",
+                secondaryColor: "#1f2937",
+                tertiaryColor: "#111827",
+                mainBkg: "transparent",
+                textColor: "#ffffff",
+                nodeBorder: "transparent",
+                clusterBkg: "transparent",
+                clusterBorder: "transparent",
+              },
+            });
+            mermaidBlocks.forEach(function (pre) {
+              var wrapper = document.createElement("div");
+              wrapper.className = "mermaid-wrapper";
+              var div = document.createElement("div");
+              div.className = "mermaid";
+              div.textContent = pre.textContent;
+              wrapper.appendChild(div);
+              var captionEl = pre.nextElementSibling;
+              if (captionEl && captionEl.tagName === "P" && captionEl.querySelector("em")) {
+                var cap = document.createElement("p");
+                cap.className = "mermaid-caption";
+                cap.textContent = captionEl.textContent;
+                wrapper.appendChild(cap);
+                captionEl.remove();
+              }
+              pre.replaceWith(wrapper);
+            });
+            mermaid.default.run();
+          }
+        );
+      }
+    });
+  </script>
+</BaseLayout>

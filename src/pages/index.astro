@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import CaseStudyCard from "../components/CaseStudyCard.astro";
+import { getCollection } from "astro:content";
+
+const caseStudies = await getCollection("case-studies");
+---
+
+<BaseLayout title="Alecz Lopez — Senior Go Engineer">
+  <Header />
+
+  <main class="flex-1">
+    <Hero />
+
+    <section id="case-studies" class="section border-t border-gray-200 dark:border-gray-800">
+      <div class="container-page">
+        <p class="section-label">Case Studies</p>
+        <h2 class="heading-2 mb-2">Selected Work</h2>
+        <p class="mb-10 max-w-xl text-gray-600 dark:text-gray-400">
+          Real-world systems I've designed and built in production.
+        </p>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          {caseStudies
+            .sort((a, b) => a.data.title.localeCompare(b.data.title))
+            .map((entry) => (
+              <CaseStudyCard
+                slug={entry.slug}
+                title={entry.data.title}
+                company={entry.data.company}
+                category={entry.data.category}
+                tech={entry.data.tech}
+                problem={entry.data.problem}
+              />
+            ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

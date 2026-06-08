@@ -1,0 +1,41 @@
+---
+import TechBadge from "./TechBadge.astro";
+
+export interface Props {
+  slug: string;
+  title: string;
+  company?: string;
+  category: string;
+  tech: string[];
+  problem: string;
+}
+
+const { slug, title, company, category, tech, problem } = Astro.props;
+---
+
+<a
+  href={`/case-studies/${slug}`}
+  class="group block rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-accent-300 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-accent-700 dark:hover:shadow-accent-900/20"
+>
+  <div class="flex items-start justify-between gap-4">
+    <div class="flex-1">
+      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-accent-600 transition-colors dark:text-gray-100 dark:group-hover:text-accent-400">
+        {title}
+      </h3>
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        {category}{company ? ` \u00B7 ${company}` : ""}
+      </p>
+    </div>
+    <span class="mt-1 shrink-0 text-sm font-medium text-accent-600 opacity-0 group-hover:opacity-100 transition-opacity dark:text-accent-400">
+      Read &rarr;
+    </span>
+  </div>
+
+  <p class="mt-3 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+    {problem}
+  </p>
+
+  <div class="mt-4 flex flex-wrap gap-1.5">
+    {tech.map((t) => <TechBadge name={t} />)}
+  </div>
+</a>

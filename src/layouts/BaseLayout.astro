@@ -1,0 +1,34 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description ?? "Portfolio of Alecz Lopez — Senior Go Engineer"} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | Alecz Lopez</title>
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("theme");
+        if (stored === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <slot />
+  </body>
+</html>

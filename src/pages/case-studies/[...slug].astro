@@ -1,0 +1,70 @@
+---
+import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import TechBadge from "../../components/TechBadge.astro";
+import MetricBadge from "../../components/MetricBadge.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const studies = await getCollection("case-studies");
+  return studies.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data;
+---
+
+<CaseStudyLayout title={data.title} description={data.problem}>
+  <Header />
+
+  <main class="flex-1">
+    <article class="section">
+      <div class="container-page">
+        <!-- Back link -->
+        <a
+          href="/#case-studies"
+          class="mb-8 inline-flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-accent-600 transition-colors dark:text-gray-400 dark:hover:text-accent-400"
+        >
+          &larr; Back to case studies
+        </a>
+
+        <!-- Header -->
+        <header class="mb-10">
+          <h1 class="heading-1 mb-4">{data.title}</h1>
+          <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+            <span class="font-medium text-gray-700 dark:text-gray-200">{data.category}</span>
+            {data.company && (
+              <>
+                <span aria-hidden="true">&middot;</span>
+                <span>{data.company}</span>
+              </>
+            )}
+            {data.duration && (
+              <>
+                <span aria-hidden="true">&middot;</span>
+                <span>{data.duration}</span>
+              </>
+            )}
+          </div>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            {data.tech.map((t) => <TechBadge name={t} />)}
+          </div>
+        </header>
+
+        <!-- Content -->
+        <div class="prose prose-gray max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-2xl prose-h3:mt-8 prose-h3:text-xl prose-a:text-accent-600 prose-code:rounded prose-code:bg-transparent prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:bg-transparent prose-pre:text-inherit prose-strong:text-gray-900 dark:prose-invert dark:prose-strong:text-gray-100 dark:prose-code:bg-transparent dark:prose-pre:bg-transparent">
+          <Content />
+        </div>
+
+        <!-- Key Files Table (hardcoded in MD) and Metrics are already in the MD content -->
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</CaseStudyLayout>

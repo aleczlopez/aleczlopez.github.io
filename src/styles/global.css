@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100;
+  }
+
+  ::selection {
+    @apply bg-accent-200 text-accent-900 dark:bg-accent-800 dark:text-accent-200;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto max-w-5xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section {
+    @apply py-16 sm:py-24;
+  }
+
+  .section-label {
+    @apply mb-2 text-sm font-semibold uppercase tracking-widest text-accent-600 dark:text-accent-400;
+  }
+
+  .heading-1 {
+    @apply text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-gray-100;
+  }
+
+  .heading-2 {
+    @apply text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-gray-100;
+  }
+}
